@@ -44,7 +44,7 @@ class Cube():
         return physical_vertices
 
     def rotate(self):
-        """Performs a rotation around the center of the cube to the vertices.
+        """Performs a rotation around 0, 0, 0 to the vertices.
 
         Returns:
             list: The x,y,z co-ordinates of the newly rotated vertices.
@@ -102,7 +102,7 @@ class Cube():
         self.angle[2] += 0.011
 
 
-position = [0, 0, 0]
+position = [0, 0, -100]
 angle = [0, 0, 0]
 cube = Cube(100, position, angle)
 
