@@ -5,10 +5,6 @@ import numpy as np
 
 WINDOW_SIZE = [1280, 720]
 TITLE = '3D Render Test'
-SCALE = 25
-
-orthographic = np.array([[1, 0, 0],
-                         [0, 1, 0]])
 
 
 class Camera():
