@@ -38,6 +38,14 @@ class Camera():
         return(rotate_x, rotate_y, rotate_z, position_offset)
 
     def camera_transform(self, vertice_position):
+        """Does the camera transform on the vertices.
+
+        Args:
+            vertice_position (list): The x,y,z co-ordinates of the vertices.
+
+        Returns:
+            vect_d (list): The vectors to convert to 2d.
+        """
         arguments = self.camera_matrices(vertice_position)
         vect_d = np.matmul(arguments[0], arguments[1])
         vect_d = np.matmul(vect_d, arguments[2])
@@ -45,6 +53,14 @@ class Camera():
         return vect_d
 
     def projection(self, vertice_position):
+        """Converts the 3d vectors to 2d points.
+
+        Args:
+            vertice_position (list): The x,y,z co-ordinates of the vertices.
+
+        Returns:
+            vertice_2d (list): The 2d points of the vertices.
+        """
         vect_d = self.camera_transform(vertice_position)
         vertice_2d = [None, None]
         vertice_2d[0] = (self.screen_position[2] / vect_d[2]) * vect_d[0] + self.screen_position[0]
