@@ -101,19 +101,6 @@ class Cube():
         rotated_vertices = np.array([np.matmul(rotate_z, x) for x in rotated_vertices])
         return rotated_vertices
 
-    def projection(self, p_matrix):
-        """Projects the 3d positions of the vertices onto a 2d plane to render.
-
-        Args:
-            p_matrix (list): The projection matrix that does the 3d -> 2d transformation.
-
-        Returns:
-            list: The x,y points of the cubes vertices after projection.
-        """
-        vertices = self.rotate()
-        points = np.array([np.matmul(p_matrix, x) for x in vertices])
-        return points
-
     def draw(self):
         """Creates and draws the lines between the points on the cube.
         """
@@ -142,11 +129,13 @@ class Cube():
         """
         self.angle[0] += 0.004
         self.angle[1] += 0.01
-        # self.angle[2] += 0.00
+        # self.angle[2] += 0.01
 
 
-camera = Camera([0, 0, -200], [0, 0, 0], [0, 0, -180])
-print(camera.projection([0, 0, 0]))
+camera_position = [0, 0, -200]
+camera_angle = [0, 0, 0]
+screen_position = [0, 0, -180]
+camera = Camera(camera_position, camera_angle, screen_position)
 
 cube_position = [0, 0, 0]
 cube_angle = [0, 0, 0]
