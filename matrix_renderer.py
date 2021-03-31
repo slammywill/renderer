@@ -10,6 +10,48 @@ SCALE = 25
 orthographic = np.array([[1, 0, 0],
                          [0, 1, 0]])
 
+
+class Camera():
+    def __init__(self, position, angle, screen_position):
+        """Creates the camera and screen.
+
+        Args:
+            position (list): The x,y,z co-ordinates of the camera object.
+            angles (list): The rotations around the x,y,z axis' of the camera.
+            screen_position (list): The x,y,z co-ordinates of the projection screen.
+        """
+        self.position = position
+        self.angle = angle
+        self.screen_position = screen_position
+
+    def camera_matrices(self, vertice_position):
+        """Defines the matrices used in the projection calculation
+
+        Args:
+            angle (list): The rotations around the x,y,z axis' of the camera.
+        """
+        rotate_x = np.array([[1, 0, 0], [0, cos(self.angle[0]), - sin(self.angle[0])], [0, sin(self.angle[0]), cos(self.angle[0])]])
+        rotate_y = np.array([[cos(self.angle[1]), 0, sin(self.angle[1])], [0, 1, 0], [- sin(self.angle[1]), 0, cos(self.angle[1])]])
+        rotate_z = np.array([[cos(self.angle[2]), - sin(self.angle[2]), 0], [sin(self.angle[2]), cos(self.angle[2]), 0], [0, 0, 1]])
+
+        position_offset = np.subtract(vertice_position, self.position)
+        return(rotate_x, rotate_y, rotate_z, position_offset)
+
+    def camera_transform(self, vertice_position):
+        arguments = self.camera_matrices(vertice_position)
+        vect_d = np.matmul(arguments[0], arguments[1])
+        vect_d = np.matmul(vect_d, arguments[2])
+        vect_d = np.matmul(vect_d, arguments[3])
+        return vect_d
+
+    def projection(self, vertice_position):
+        vect_d = self.camera_transform(vertice_position)
+        vertice_2d = [None, None]
+        vertice_2d[0] = (self.screen_position[2] / vect_d[2]) * vect_d[0] + self.screen_position[0]
+        vertice_2d[1] = (self.screen_position[2] / vect_d[2]) * vect_d[1] + self.screen_position[1]
+        return vertice_2d
+
+
 class Cube():
     def __init__(self, size, position, angle):
         """Creates a cube object.
@@ -17,7 +59,7 @@ class Cube():
         Args:
             size (int / float): The sidelength of the cube.
             position (list): The x,y,z co-ordinates of the cube.
-            angle ([type]): The rotations around the x,y,z axis' of the cube.
+            angle (list): The rotations around the x,y,z axis' of the cube.
         """
         self.angle = [radians(x) for x in angle]
         self.size = size
@@ -75,7 +117,8 @@ class Cube():
     def draw(self):
         """Creates and draws the lines between the points on the cube.
         """
-        points = self.projection(orthographic)
+        vertices = self.rotate()
+        points = [camera.projection(x) for x in vertices]
         w_h = WINDOW_SIZE[1] // 2
         w_w = WINDOW_SIZE[0] // 2
         line_batch = graphics.Batch()
@@ -97,14 +140,17 @@ class Cube():
         Args:
             dt (float): The timestep in seconds.
         """
-        self.angle[0] += 0.05
-        self.angle[1] += 0.05
-        self.angle[2] += 0.011
+        self.angle[0] += 0.004
+        self.angle[1] += 0.01
+        # self.angle[2] += 0.00
 
 
-position = [0, 0, -100]
-angle = [0, 0, 0]
-cube = Cube(100, position, angle)
+camera = Camera([0, 0, -200], [0, 0, 0], [0, 0, -180])
+print(camera.projection([0, 0, 0]))
+
+cube_position = [0, 0, 0]
+cube_angle = [0, 0, 0]
+cube = Cube(100, cube_position, cube_angle)
 
 window = window.Window(WINDOW_SIZE[0], WINDOW_SIZE[1], TITLE)
 
