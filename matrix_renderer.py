@@ -139,9 +139,9 @@ class Cube():
         Args:
             dt (float): The timestep in seconds.
         """
-        self.angle[0] += 0.004
+        self.angle[0] += 0.05
         self.angle[1] += 0.01
-        # self.angle[2] += 0.01
+        self.angle[2] += 0.02
 
 
 camera_position = [0, 0, -200]
