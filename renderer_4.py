@@ -27,20 +27,20 @@ class Cube:
     def vertices(self):
         """Creates the cubes 8 vertices."""
         vertice_list = np.array([
-            [self.position[0]    , self.position[1]    , self.position[2]    ] # \
-            [self.position[0] + 1, self.position[1]    , self.position[2]    ] #  |_ top face
-            [self.position[0] + 1, self.position[1]    , self.position[2] - 1] #  |
-            [self.position[0]    , self.position[1]    , self.position[2] - 1] # /
+            [self.position[0]    , self.position[1]    , self.position[2]    ], # \
+            [self.position[0] + 1, self.position[1]    , self.position[2]    ], #  |_ top face
+            [self.position[0] + 1, self.position[1]    , self.position[2] - 1], #  |
+            [self.position[0]    , self.position[1]    , self.position[2] - 1], # /
 
-            [self.position[0]    , self.position[1] - 1, self.position[2]    ] # \
-            [self.position[0] + 1, self.position[1] - 1, self.position[2]    ] #  |_ bottom face
-            [self.position[0] + 1, self.position[1] - 1, self.position[2] - 1] #  |
-            [self.position[0]    , self.position[1] - 1, self.position[2] - 1] # /
+            [self.position[0]    , self.position[1] - 1, self.position[2]    ], # \
+            [self.position[0] + 1, self.position[1] - 1, self.position[2]    ], #  |_ bottom face
+            [self.position[0] + 1, self.position[1] - 1, self.position[2] - 1], #  |
+            [self.position[0]    , self.position[1] - 1, self.position[2] - 1]  # /
         ])
         return vertice_list
 
 
-def draw():
+def draw_window():
     """Draws to the window."""
     pygame.draw.aaline(WIN, GREEN, (0, 0), (100, 100))
     pygame.display.update()
@@ -55,7 +55,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-        draw()
+        draw_window()
     pygame.quit()
 
 
