@@ -3,7 +3,7 @@ from pyglet import *
 import numpy as np
 
 
-WINDOW_SIZE = [1280, 720]
+WINDOW_SIZE = (1280, 720)
 TITLE = '3D Render Test'
 
 
@@ -43,9 +43,7 @@ class Camera():
             vect_d (list): The vectors to convert to 2d.
         """
         arguments = self.camera_matrices(vertice_position)
-        vect_d = np.matmul(arguments[0], arguments[1])
-        vect_d = np.matmul(vect_d, arguments[2])
-        vect_d = np.matmul(vect_d, arguments[3])
+        vect_d = arguments[0] @ arguments[1] @ arguments[2] @ arguments[3]
         return vect_d
 
     def projection(self, vertice_position):
@@ -108,9 +106,9 @@ class Cube():
         rotate_y = np.array([[cos(self.angle[1]), 0, sin(self.angle[1])], [0, 1, 0], [- sin(self.angle[1]), 0, cos(self.angle[1])]])
         rotate_z = np.array([[cos(self.angle[2]), - sin(self.angle[2]), 0], [sin(self.angle[2]), cos(self.angle[2]), 0], [0, 0, 1]])
 
-        rotated_vertices = np.array([np.matmul(rotate_x, x) for x in vertices])
-        rotated_vertices = np.array([np.matmul(rotate_y, x) for x in rotated_vertices])
-        rotated_vertices = np.array([np.matmul(rotate_z, x) for x in rotated_vertices])
+        rotated_vertices = np.array([rotate_x @ x for x in vertices])
+        rotated_vertices = np.array([rotate_y @ x for x in rotated_vertices])
+        rotated_vertices = np.array([rotate_z @ x for x in rotated_vertices])
         return rotated_vertices
 
     def draw(self):
@@ -141,7 +139,7 @@ class Cube():
         """
         self.angle[0] += 0.05
         self.angle[1] += 0.01
-        self.angle[2] += 0.02
+        self.angle[2] += 0.05
 
 
 camera_position = [0, 0, -200]
@@ -172,3 +170,4 @@ def main():
 
 
 main()
+
