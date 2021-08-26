@@ -59,7 +59,20 @@ class Camera():
         vertice_2d = [None, None]
         vertice_2d[0] = (self.screen_position[2] / vect_d[2]) * vect_d[0] + self.screen_position[0]
         vertice_2d[1] = (self.screen_position[2] / vect_d[2]) * vect_d[1] + self.screen_position[1]
-        return vertice_2d
+        return vertice_2d 
+
+    def camera_transform(self, vertice_position):
+        """Does the camera transform on the vertices.
+
+        Args:
+            vertice_position (list): The x,y,z co-ordinates of the vertices.
+
+        Returns:
+            vect_d (list): The vectors to convert to 2d.
+        """
+        arguments = self.camera_matrices(vertice_position)
+        vect_d = arguments[0] @ arguments[1] @ arguments[2] @ arguments[3]
+        return vect_d
 
 
 class Cube():
@@ -158,7 +171,7 @@ window = window.Window(WINDOW_SIZE[0], WINDOW_SIZE[1], TITLE)
 def on_draw():
     """Renders the pyglet window.
     """
-    window.clear()
+    WINDOW.clear()
     cube.draw()
 
 
